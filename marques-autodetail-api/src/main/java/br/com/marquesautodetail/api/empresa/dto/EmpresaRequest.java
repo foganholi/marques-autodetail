@@ -1,0 +1,1 @@
+package br.com.marquesautodetail.api.empresa.dto; public record EmpresaRequest(String nomeFantasia,String descricao,String telefone,String cnpj,String cep,String rua,String numero,String bairro,String cidade,String estado,Double latitude,Double longitude,Boolean aberta){}

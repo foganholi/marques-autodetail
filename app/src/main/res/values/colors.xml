@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="mad_bg">#0A0F1A</color>
+    <color name="mad_surface">#111827</color>
+    <color name="mad_surface_2">#172033</color>
+    <color name="mad_primary">#F59E0B</color>
+    <color name="mad_secondary">#1F3A5F</color>
+    <color name="mad_text">#FFFFFF</color>
+    <color name="mad_text_muted">#D1D5DB</color>
+    <color name="mad_gray">#6B7280</color>
+</resources>

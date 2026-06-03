@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mad_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="22dp">
+
+        <TextView
+            android:id="@+id/btnVoltarServicoForm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="← Voltar"
+            android:textColor="@color/mad_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtTituloServicoForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Novo serviço"
+            android:textColor="@color/mad_text"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtServicoFormStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Preencha os dados que o cliente verá no app."
+            android:textColor="@color/mad_text_muted" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_card_dark"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <EditText android:id="@+id/edtServicoNome" style="@style/MadInput" android:hint="Nome do serviço" />
+            <EditText android:id="@+id/edtServicoDescricao" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Descrição" android:minLines="3" android:gravity="top" />
+            <EditText android:id="@+id/edtServicoPreco" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Preço. Ex: 120.00" android:inputType="numberDecimal" />
+            <EditText android:id="@+id/edtServicoDuracao" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Duração em minutos. Ex: 90" android:inputType="number" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSalvarServico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:backgroundTint="@color/mad_primary"
+            android:minHeight="52dp"
+            android:text="Salvar serviço"
+            android:textColor="@color/mad_text"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnExcluirServico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/mad_gray"
+            android:minHeight="52dp"
+            android:text="Excluir serviço"
+            android:textColor="@color/mad_text"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

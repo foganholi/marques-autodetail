@@ -1,0 +1,1 @@
+package br.com.marquesautodetail.api.empresa; import br.com.marquesautodetail.api.usuario.Usuario; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface EmpresaRepository extends JpaRepository<Empresa,Long>{ Optional<Empresa> findByUsuario(Usuario usuario); }

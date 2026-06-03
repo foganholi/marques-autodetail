@@ -1,0 +1,1 @@
+package br.com.marquesautodetail.api.auth.dto; import jakarta.validation.constraints.*; public record RegisterRequest(@NotBlank String nome,@Email String email,@NotBlank String senha,String telefone,String nomeFantasia){}

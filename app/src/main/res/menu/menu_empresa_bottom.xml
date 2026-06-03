@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_empresa_dashboard" android:title="Painel" android:icon="@android:drawable/ic_menu_manage" />
+    <item android:id="@+id/nav_empresa_agenda" android:title="Agenda" android:icon="@android:drawable/ic_menu_month" />
+    <item android:id="@+id/nav_empresa_servicos" android:title="Serviços" android:icon="@android:drawable/ic_menu_edit" />
+    <item android:id="@+id/nav_empresa_perfil" android:title="Empresa" android:icon="@android:drawable/ic_menu_myplaces" />
+</menu>

@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Marques Auto Detail</string>
+
+    <string name="login_title">Marques Auto Detail</string>
+    <string name="login_subtitle">Sign in to your account</string>
+    <string name="email_or_user_hint">Email or username</string>
+    <string name="password_hint">Password</string>
+    <string name="enter_button">Sign in</string>
+    <string name="create_account_button">Create account</string>
+
+    <string name="cadastro_title">Create account</string>
+    <string name="name_hint">Full name</string>
+    <string name="confirm_password_hint">Confirm password</string>
+    <string name="gender_label">Gender</string>
+    <string name="male_option">Male</string>
+    <string name="female_option">Female</string>
+    <string name="interests_label">Interests</string>
+    <string name="wash_option">Wash</string>
+    <string name="polish_option">Polish</string>
+    <string name="vehicle_type_label">Vehicle type</string>
+    <string name="create_account_confirm_button">Create account</string>
+
+    <string name="menu_welcome">Welcome</string>
+    <string name="menu_choose">Choose an option</string>
+    <string name="menu_services">Services</string>
+    <string name="menu_schedules">Appointments</string>
+    <string name="menu_exit">Exit</string>
+
+    <string name="services_title">Services</string>
+    <string name="services_subtitle">Choose the desired service</string>
+    <string name="service_select">Select</string>
+
+    <string name="schedule_title">Appointment</string>
+    <string name="schedule_subtitle">Choose the date and service</string>
+    <string name="customer_name_hint">Customer name</string>
+    <string name="date_hint">Appointment date</string>
+    <string name="time_hint">Time</string>
+    <string name="confirm_schedule">I confirm the appointment</string>
+    <string name="confirm_button">Confirm</string>
+</resources>

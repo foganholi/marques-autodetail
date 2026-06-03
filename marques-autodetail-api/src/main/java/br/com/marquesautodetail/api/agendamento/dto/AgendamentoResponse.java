@@ -1,0 +1,1 @@
+package br.com.marquesautodetail.api.agendamento.dto; import java.time.*; public record AgendamentoResponse(Long id,String nomeCliente,Long empresaId,String empresaNome,Long servicoId,String servicoNome,LocalDate data,LocalTime hora,String status,String observacao){}

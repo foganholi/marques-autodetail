@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="14dp"
+    android:background="@drawable/bg_card_dark"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtNomeEmpresa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Marques AutoDetail"
+            android:textColor="@color/mad_text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtDistanciaEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1,2 km"
+            android:textColor="@color/mad_primary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtEnderecoEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Bela Vista • Av. Paulista"
+        android:textColor="@color/mad_text_muted"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txtAvaliacaoEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="★ 4.9 • Hoje, 15:30"
+        android:textColor="@color/mad_text"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txtServicoResumo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Lavagem • Polimento • Higienização"
+        android:textColor="@color/mad_text_muted"
+        android:textSize="13sp" />
+
+    <Button
+        android:id="@+id/btnVerDetalhes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:backgroundTint="@color/mad_primary"
+        android:minHeight="48dp"
+        android:text="Ver serviços e agendar"
+        android:textColor="@color/mad_text"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mad_bg">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="92dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/txtDashboardEmpresaNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Painel da empresa"
+                android:textColor="@color/mad_text"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDashboardResumo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Gerencie sua operação"
+                android:textColor="@color/mad_text_muted" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_card_dark"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12" android:textColor="@color/mad_primary" android:textSize="26sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Agendamentos" android:textColor="@color/mad_text_muted" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_card_dark"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4.9" android:textColor="@color/mad_primary" android:textSize="26sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Avaliação" android:textColor="@color/mad_text_muted" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_card_highlight"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Próximo horário recebido"
+                    android:textColor="@color/mad_text"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Lavagem completa • Hoje às 15:30 • Status pendente"
+                    android:textColor="@color/mad_text_muted" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnEmpresaAgendamentos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/mad_primary"
+                android:minHeight="52dp"
+                android:text="Ver agendamentos recebidos"
+                android:textColor="@color/mad_text"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnEmpresaServicos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/mad_secondary"
+                android:minHeight="52dp"
+                android:text="Gerenciar serviços"
+                android:textColor="@color/mad_text"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnEmpresaHorarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/mad_secondary"
+                android:minHeight="52dp"
+                android:text="Gerenciar dias e horários"
+                android:textColor="@color/mad_text"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnEmpresaPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/mad_secondary"
+                android:minHeight="52dp"
+                android:text="Editar perfil da empresa"
+                android:textColor="@color/mad_text"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnEmpresaSair"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/mad_gray"
+                android:minHeight="52dp"
+                android:text="Sair"
+                android:textColor="@color/mad_text"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/mad_surface"
+        app:itemIconTint="@color/mad_primary"
+        app:itemTextColor="@color/mad_text"
+        app:menu="@menu/menu_empresa_bottom" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

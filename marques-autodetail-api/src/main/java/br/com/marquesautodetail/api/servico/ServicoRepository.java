@@ -1,0 +1,1 @@
+package br.com.marquesautodetail.api.servico; import br.com.marquesautodetail.api.empresa.Empresa; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface ServicoRepository extends JpaRepository<Servico,Long>{ List<Servico> findByEmpresaAndAtivoTrue(Empresa empresa); List<Servico> findByEmpresaIdAndAtivoTrue(Long empresaId); }

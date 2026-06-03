@@ -1,0 +1,1 @@
+package br.com.marquesautodetail.api.avaliacao.dto; import java.time.LocalDateTime; public record AvaliacaoResponse(Long id,String clienteNome,Long empresaId,Integer nota,String comentario,LocalDateTime criadoEm){}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.MatheusFoganholi.marquesautodetail">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MarquesAutoDetail"
+        android:usesCleartextTraffic="true">
+
+        <activity android:name=".ui.ServicoFormActivity" android:exported="false" />
+        <activity android:name=".ui.HorariosDisponiveisActivity" android:exported="false" />
+        <activity android:name=".ui.EmpresaServicosActivity" android:exported="false" />
+        <activity android:name=".ui.EmpresaPerfilActivity" android:exported="false" />
+        <activity android:name=".ui.ClientePerfilActivity" android:exported="false" />
+        <activity android:name=".ui.FavoritosActivity" android:exported="false" />
+        <activity android:name=".ui.EmpresaDashboardActivity" android:exported="false" />
+        <activity android:name=".ui.EmpresaDetalheActivity" android:exported="false" />
+        <activity android:name=".ui.ClienteHomeActivity" android:exported="false" />
+        <activity android:name=".ui.ServicosActivity" android:exported="false" />
+        <activity android:name=".ui.MenuActivity" android:exported="false" />
+        <activity android:name=".ui.CadastroActivity" android:exported="false" />
+        <activity android:name=".ui.AgendamentosActivity" android:exported="false" />
+        <activity android:name=".ui.AgendamentosListaActivity" android:exported="false" />
+
+        <activity
+            android:name=".ui.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

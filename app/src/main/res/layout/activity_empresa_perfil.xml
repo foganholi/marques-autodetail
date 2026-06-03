@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mad_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="22dp">
+
+        <TextView
+            android:id="@+id/btnVoltarPerfilEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="← Voltar"
+            android:textColor="@color/mad_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Editar perfil da empresa"
+            android:textColor="@color/mad_text"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtEmpresaPerfilStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Carregando..."
+            android:textColor="@color/mad_primary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_card_dark"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <EditText android:id="@+id/edtEmpresaNome" style="@style/MadInput" android:hint="Nome fantasia" />
+            <EditText android:id="@+id/edtEmpresaDescricao" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Descrição" android:minLines="3" android:gravity="top" />
+            <EditText android:id="@+id/edtEmpresaTelefone" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Telefone / WhatsApp" />
+            <EditText android:id="@+id/edtEmpresaRua" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Rua" />
+            <EditText android:id="@+id/edtEmpresaNumero" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Número" />
+            <EditText android:id="@+id/edtEmpresaBairro" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Bairro" />
+            <EditText android:id="@+id/edtEmpresaCidade" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Cidade" />
+            <EditText android:id="@+id/edtEmpresaEstado" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Estado" />
+            <EditText android:id="@+id/edtEmpresaLatitude" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Latitude" android:inputType="numberDecimal|numberSigned" />
+            <EditText android:id="@+id/edtEmpresaLongitude" style="@style/MadInput" android:layout_marginTop="10dp" android:hint="Longitude" android:inputType="numberDecimal|numberSigned" />
+
+            <Switch
+                android:id="@+id/switchEmpresaAberta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:minHeight="48dp"
+                android:text="Empresa aberta agora"
+                android:textColor="@color/mad_text" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSalvarPerfilEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:backgroundTint="@color/mad_primary"
+            android:minHeight="52dp"
+            android:text="Salvar alterações"
+            android:textColor="@color/mad_text"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnGerenciarHorariosEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/mad_secondary"
+            android:minHeight="52dp"
+            android:text="Gerenciar dias e horários"
+            android:textColor="@color/mad_text"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

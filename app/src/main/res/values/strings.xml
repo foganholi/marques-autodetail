@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Marques Auto Detail</string>
+
+    <string name="login_title">Marques Auto Detail</string>
+    <string name="login_subtitle">Entre com sua conta</string>
+    <string name="email_or_user_hint">E-mail ou usuário</string>
+    <string name="password_hint">Senha</string>
+    <string name="enter_button">Entrar</string>
+    <string name="create_account_button">Criar conta</string>
+
+    <string name="cadastro_title">Criar conta</string>
+    <string name="name_hint">Nome completo</string>
+    <string name="confirm_password_hint">Confirmar senha</string>
+    <string name="gender_label">Gênero</string>
+    <string name="male_option">Masculino</string>
+    <string name="female_option">Feminino</string>
+    <string name="interests_label">Interesses</string>
+    <string name="wash_option">Lavagem</string>
+    <string name="polish_option">Polimento</string>
+    <string name="vehicle_type_label">Tipo de veículo</string>
+    <string name="create_account_confirm_button">Criar conta</string>
+
+    <string name="menu_welcome">Bem-vindo</string>
+    <string name="menu_choose">Escolha uma opção</string>
+    <string name="menu_services">Serviços</string>
+    <string name="menu_schedules">Agendamentos</string>
+    <string name="menu_exit">Sair</string>
+
+    <string name="services_title">Serviços</string>
+    <string name="services_subtitle">Escolha o serviço desejado</string>
+    <string name="service_select">Selecionar</string>
+
+    <string name="schedule_title">Agendamento</string>
+    <string name="schedule_subtitle">Escolha a data e o serviço</string>
+    <string name="customer_name_hint">Nome do cliente</string>
+    <string name="date_hint">Data do agendamento</string>
+    <string name="time_hint">Horário</string>
+    <string name="confirm_schedule">Confirmo o agendamento</string>
+    <string name="confirm_button">Confirmar</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_cliente_home" android:title="Início" android:icon="@android:drawable/ic_menu_mylocation" />
+    <item android:id="@+id/nav_cliente_historico" android:title="Histórico" android:icon="@android:drawable/ic_menu_recent_history" />
+    <item android:id="@+id/nav_cliente_favoritos" android:title="Favoritos" android:icon="@android:drawable/btn_star_big_on" />
+    <item android:id="@+id/nav_cliente_perfil" android:title="Perfil" android:icon="@android:drawable/ic_menu_myplaces" />
+</menu>
