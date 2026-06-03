@@ -99,6 +99,8 @@ Para validar o Android, use o Gradle wrapper na raiz:
 
 Qualquer plataforma que execute Java 17 e exponha porta HTTP pode hospedar a API, como Render, Railway, Fly.io, DigitalOcean App Platform ou um VPS.
 
+O backend tambem possui um `Dockerfile` em `marques-autodetail-api/Dockerfile`, entao pode ser publicado como container. Para Render, ha um `render.yaml` na raiz com as variaveis sensiveis marcadas para configuracao manual no painel.
+
 Checklist de deploy:
 
 - Configurar Java 17.
@@ -107,3 +109,12 @@ Checklist de deploy:
 - Definir `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `JWT_SECRET` e `PORT`.
 - Executar `marques-autodetail-api/database/supabase_schema.sql` no Supabase antes de iniciar a API com `spring.jpa.hibernate.ddl-auto=validate`.
 - Atualizar `BASE_URL` no Android para a URL publica da API.
+
+Checklist para deixar online:
+
+1. Criar o projeto no Supabase.
+2. Executar o SQL em `marques-autodetail-api/database/supabase_schema.sql`.
+3. Criar o servico web no provedor usando Java 17 ou Docker.
+4. Configurar as variaveis de ambiente do backend.
+5. Fazer um teste de login em `/api/auth/login` com `empresa@marques.com` e senha `123456`.
+6. Atualizar `BASE_URL` no Android para a URL publica do backend.
