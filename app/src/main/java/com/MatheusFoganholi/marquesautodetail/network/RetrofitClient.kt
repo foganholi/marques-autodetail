@@ -11,9 +11,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     // Emulador Android: 10.0.2.2 acessa o localhost da máquina onde o Spring Boot está rodando.
-    // Apos o deploy da API, troque para a URL publica do backend Spring Boot:
-    // private const val BASE_URL = "https://sua-api-online.com/api/"
-    private const val BASE_URL = "http://10.0.2.2:8080/api/"
+    // API online hospedada no Render. Para testes locais no emulador Android,
+    // use: http://10.0.2.2:8080/api/
+    private const val BASE_URL = "https://marques-autodetail-api.onrender.com/api/"
 
     fun api(context: Context): ApiService {
         val appContext = context.applicationContext
