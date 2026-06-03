@@ -112,7 +112,8 @@ Checklist de deploy:
 - Configurar Java 17.
 - Build command: `mvn clean package`.
 - Start command: `java -jar target/marques-autodetail-api-0.0.1-SNAPSHOT.jar`.
-- Definir `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `JWT_SECRET` e `PORT`.
+- Definir `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD` e `JWT_SECRET`.
+- Em provedores como Render, nao defina `PORT` manualmente; use a porta injetada pelo provedor.
 - Executar `marques-autodetail-api/database/supabase_schema.sql` no Supabase antes de iniciar a API com `spring.jpa.hibernate.ddl-auto=validate`.
 - Atualizar `BASE_URL` no Android para a URL publica da API.
 
