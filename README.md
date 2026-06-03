@@ -14,8 +14,8 @@ Configure estas variaveis no ambiente local e tambem no provedor de deploy:
 
 ```env
 DATABASE_URL=jdbc:postgresql://db.PROJECT_REF.supabase.co:5432/postgres?sslmode=require
-DATABASE_USERNAME=postgres
-DATABASE_PASSWORD=sua-senha-do-banco-supabase
+DATABASE_USERNAME=marques_api_user
+DATABASE_PASSWORD=sua-senha-do-usuario-do-backend
 JWT_SECRET=um-segredo-longo-com-pelo-menos-32-caracteres
 PORT=8080
 ```
@@ -24,8 +24,8 @@ Para ambientes sem IPv6, use a connection string do Supavisor em session mode e 
 
 ```env
 DATABASE_URL=jdbc:postgresql://aws-0-REGION.pooler.supabase.com:5432/postgres?sslmode=require
-DATABASE_USERNAME=postgres.PROJECT_REF
-DATABASE_PASSWORD=sua-senha-do-banco-supabase
+DATABASE_USERNAME=marques_api_user.PROJECT_REF
+DATABASE_PASSWORD=sua-senha-do-usuario-do-backend
 ```
 
 Evite o pooler em transaction mode para esta API JPA/Hibernate, porque esse modo pode ser incompativel com prepared statements.
@@ -37,6 +37,12 @@ Evite o pooler em transaction mode para esta API JPA/Hibernate, porque esse modo
 3. Copie a connection string de `Direct connection` se o deploy suportar IPv6, ou `Session pooler` se precisar de IPv4.
 4. Converta a URL para JDBC adicionando `jdbc:` no inicio e `?sslmode=require` no final quando necessario.
 5. Configure `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD` e `JWT_SECRET` no ambiente da API.
+
+O script SQL cria a role `marques_api_user` com permissoes e policies para a API Spring Boot. A senha dessa role deve ser definida fora do Git, por exemplo no SQL Editor:
+
+```sql
+alter role marques_api_user with password 'uma-senha-forte';
+```
 
 ## Executar o SQL
 

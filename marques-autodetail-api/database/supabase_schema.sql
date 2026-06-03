@@ -119,6 +119,7 @@ create index if not exists idx_agendamentos_data_hora on agendamentos(data, hora
 create index if not exists idx_favoritos_cliente_id on favoritos(cliente_id);
 create index if not exists idx_favoritos_empresa_id on favoritos(empresa_id);
 create index if not exists idx_avaliacoes_empresa_id on avaliacoes(empresa_id);
+create index if not exists idx_avaliacoes_cliente_id on avaliacoes(cliente_id);
 create index if not exists idx_horarios_empresa_id on horarios_disponiveis(empresa_id);
 create index if not exists idx_horarios_ativo on horarios_disponiveis(ativo);
 
@@ -194,3 +195,44 @@ alter table agendamentos enable row level security;
 alter table favoritos enable row level security;
 alter table avaliacoes enable row level security;
 alter table horarios_disponiveis enable row level security;
+
+do $$
+begin
+    if not exists (select 1 from pg_roles where rolname = 'marques_api_user') then
+        create role marques_api_user login;
+    end if;
+end $$;
+
+grant usage on schema public to marques_api_user;
+grant select, insert, update, delete on all tables in schema public to marques_api_user;
+grant usage, select, update on all sequences in schema public to marques_api_user;
+
+alter default privileges in schema public grant select, insert, update, delete on tables to marques_api_user;
+alter default privileges in schema public grant usage, select, update on sequences to marques_api_user;
+
+drop policy if exists backend_all_usuarios on usuarios;
+create policy backend_all_usuarios on usuarios for all to marques_api_user using (true) with check (true);
+
+drop policy if exists backend_all_enderecos on enderecos;
+create policy backend_all_enderecos on enderecos for all to marques_api_user using (true) with check (true);
+
+drop policy if exists backend_all_empresas on empresas;
+create policy backend_all_empresas on empresas for all to marques_api_user using (true) with check (true);
+
+drop policy if exists backend_all_servicos on servicos;
+create policy backend_all_servicos on servicos for all to marques_api_user using (true) with check (true);
+
+drop policy if exists backend_all_agendamentos on agendamentos;
+create policy backend_all_agendamentos on agendamentos for all to marques_api_user using (true) with check (true);
+
+drop policy if exists backend_all_favoritos on favoritos;
+create policy backend_all_favoritos on favoritos for all to marques_api_user using (true) with check (true);
+
+drop policy if exists backend_all_avaliacoes on avaliacoes;
+create policy backend_all_avaliacoes on avaliacoes for all to marques_api_user using (true) with check (true);
+
+drop policy if exists backend_all_horarios_disponiveis on horarios_disponiveis;
+create policy backend_all_horarios_disponiveis on horarios_disponiveis for all to marques_api_user using (true) with check (true);
+
+-- Defina a senha da role fora do controle de versao, por exemplo:
+-- alter role marques_api_user with password 'uma-senha-forte';
