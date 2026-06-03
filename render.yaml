@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: marques-autodetail-api
+    runtime: docker
+    rootDir: marques-autodetail-api
+    plan: free
+    autoDeploy: false
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_USERNAME
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 8080
