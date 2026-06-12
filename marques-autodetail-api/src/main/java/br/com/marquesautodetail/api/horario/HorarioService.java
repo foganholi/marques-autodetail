@@ -7,6 +7,7 @@ import br.com.marquesautodetail.api.empresa.Empresa;
 import br.com.marquesautodetail.api.empresa.EmpresaRepository;
 import br.com.marquesautodetail.api.horario.dto.HorarioRequest;
 import br.com.marquesautodetail.api.horario.dto.HorarioResponse;
+import br.com.marquesautodetail.api.security.AuthenticatedUserService;
 import br.com.marquesautodetail.api.servico.Servico;
 import br.com.marquesautodetail.api.servico.ServicoRepository;
 import org.springframework.stereotype.Service;
@@ -27,35 +28,47 @@ public class HorarioService {
     private final EmpresaRepository empresas;
     private final ServicoRepository servicos;
     private final AgendamentoRepository agendamentos;
+    private final AuthenticatedUserService authenticatedUser;
 
     public HorarioService(
             HorarioRepository repo,
             EmpresaRepository empresas,
             ServicoRepository servicos,
-            AgendamentoRepository agendamentos
+            AgendamentoRepository agendamentos,
+            AuthenticatedUserService authenticatedUser
     ) {
         this.repo = repo;
         this.empresas = empresas;
         this.servicos = servicos;
         this.agendamentos = agendamentos;
+        this.authenticatedUser = authenticatedUser;
     }
 
     public List<HorarioResponse> listar(Long empresaId) {
         return repo.findByEmpresaIdAndAtivoTrue(empresaId).stream()
-                .sorted(Comparator.comparing(HorarioDisponivel::getDiaSemana).thenComparing(HorarioDisponivel::getHoraInicio))
+                .sorted(Comparator.comparing(HorarioDisponivel::getDiaSemana)
+                        .thenComparing(HorarioDisponivel::getHoraInicio))
                 .map(this::toResponse)
                 .toList();
     }
 
     public List<String> listarHorariosDisponiveis(Long empresaId, Long servicoId, LocalDate data) {
+        if (data.isBefore(LocalDate.now())) {
+            return List.of();
+        }
+
         Empresa empresa = empresas.findById(empresaId)
                 .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
-
         Servico servico = servicos.findById(servicoId)
                 .orElseThrow(() -> new IllegalArgumentException("Serviço não encontrado"));
+        if (!servico.getEmpresa().getId().equals(empresaId) || !Boolean.TRUE.equals(servico.getAtivo())) {
+            throw new IllegalArgumentException("O serviço não pertence à empresa informada ou está inativo");
+        }
 
         var horariosDoDia = repo.findByEmpresaIdAndDiaSemanaAndAtivoTrue(empresaId, data.getDayOfWeek());
-        if (horariosDoDia.isEmpty()) return List.of();
+        if (horariosDoDia.isEmpty()) {
+            return List.of();
+        }
 
         var agendamentosDoDia = agendamentos.findByEmpresaAndDataAndStatusIn(
                 empresa,
@@ -68,14 +81,11 @@ public class HorarioService {
 
         for (HorarioDisponivel faixa : horariosDoDia) {
             LocalTime cursor = faixa.getHoraInicio();
-            LocalTime limite = faixa.getHoraFim();
-
-            while (!cursor.plusMinutes(duracao).isAfter(limite)) {
+            while (!cursor.plusMinutes(duracao).isAfter(faixa.getHoraFim())) {
                 LocalTime inicio = cursor;
                 LocalTime fim = cursor.plusMinutes(duracao);
-                boolean ocupado = agendamentosDoDia.stream().anyMatch(a -> conflita(inicio, fim, a));
-
-                if (!ocupado) {
+                boolean ocupado = agendamentosDoDia.stream().anyMatch(item -> conflita(inicio, fim, item));
+                if (!ocupado && !horarioJaPassou(data, inicio)) {
                     disponiveis.add(inicio.toString().substring(0, 5));
                 }
                 cursor = cursor.plusMinutes(INTERVALO_MINUTOS);
@@ -86,36 +96,55 @@ public class HorarioService {
     }
 
     public boolean horarioDisponivel(Long empresaId, Long servicoId, LocalDate data, LocalTime hora) {
-        return listarHorariosDisponiveis(empresaId, servicoId, data).contains(hora.toString().substring(0, 5));
+        return listarHorariosDisponiveis(empresaId, servicoId, data)
+                .contains(hora.toString().substring(0, 5));
     }
 
     @Transactional
-    public HorarioResponse criar(Long empresaId, HorarioRequest r) {
-        var e = empresas.findById(empresaId).orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
-        HorarioDisponivel h = new HorarioDisponivel();
-        h.setEmpresa(e);
-        h.setDiaSemana(r.diaSemana());
-        h.setHoraInicio(r.horaInicio());
-        h.setHoraFim(r.horaFim());
-        h.setAtivo(true);
-        return toResponse(repo.save(h));
+    public HorarioResponse criar(Long empresaId, HorarioRequest request) {
+        Empresa empresa = authenticatedUser.exigirEmpresa(empresaId);
+        if (!request.horaInicio().isBefore(request.horaFim())) {
+            throw new IllegalArgumentException("O horário inicial deve ser anterior ao horário final");
+        }
+
+        HorarioDisponivel horario = new HorarioDisponivel();
+        horario.setEmpresa(empresa);
+        horario.setDiaSemana(request.diaSemana());
+        horario.setHoraInicio(request.horaInicio());
+        horario.setHoraFim(request.horaFim());
+        horario.setAtivo(true);
+        return toResponse(repo.save(horario));
     }
 
     @Transactional
     public void remover(Long id) {
-        var h = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Horário não encontrado"));
-        h.setAtivo(false);
-        repo.save(h);
+        HorarioDisponivel horario = repo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Horário não encontrado"));
+        authenticatedUser.exigirEmpresa(horario.getEmpresa().getId());
+        horario.setAtivo(false);
+        repo.save(horario);
+    }
+
+    private boolean horarioJaPassou(LocalDate data, LocalTime hora) {
+        return data.isEqual(LocalDate.now()) && hora.isBefore(LocalTime.now());
     }
 
     private boolean conflita(LocalTime inicioNovo, LocalTime fimNovo, Agendamento existente) {
-        int duracaoExistente = existente.getServico().getDuracaoMinutos() == null ? 60 : existente.getServico().getDuracaoMinutos();
+        int duracaoExistente = existente.getServico().getDuracaoMinutos() == null
+                ? 60
+                : existente.getServico().getDuracaoMinutos();
         LocalTime inicioExistente = existente.getHora();
         LocalTime fimExistente = inicioExistente.plusMinutes(duracaoExistente);
         return inicioNovo.isBefore(fimExistente) && fimNovo.isAfter(inicioExistente);
     }
 
-    private HorarioResponse toResponse(HorarioDisponivel h) {
-        return new HorarioResponse(h.getId(), h.getDiaSemana(), h.getHoraInicio(), h.getHoraFim(), h.getAtivo());
+    private HorarioResponse toResponse(HorarioDisponivel horario) {
+        return new HorarioResponse(
+                horario.getId(),
+                horario.getDiaSemana(),
+                horario.getHoraInicio(),
+                horario.getHoraFim(),
+                horario.getAtivo()
+        );
     }
 }

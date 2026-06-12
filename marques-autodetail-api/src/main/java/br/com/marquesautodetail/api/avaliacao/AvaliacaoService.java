@@ -1,2 +1,93 @@
-package br.com.marquesautodetail.api.avaliacao; import br.com.marquesautodetail.api.agendamento.*;import br.com.marquesautodetail.api.avaliacao.dto.*;import br.com.marquesautodetail.api.empresa.*;import br.com.marquesautodetail.api.usuario.*;import org.springframework.security.core.context.SecurityContextHolder;import org.springframework.stereotype.Service;import org.springframework.transaction.annotation.Transactional;import java.util.*;
-@Service public class AvaliacaoService{ private final AvaliacaoRepository repo; private final EmpresaRepository empresas; private final UsuarioRepository usuarios; private final AgendamentoRepository agendamentos; public AvaliacaoService(AvaliacaoRepository repo,EmpresaRepository empresas,UsuarioRepository usuarios,AgendamentoRepository agendamentos){this.repo=repo;this.empresas=empresas;this.usuarios=usuarios;this.agendamentos=agendamentos;} private Usuario user(){return usuarios.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow();} @Transactional public AvaliacaoResponse criar(AvaliacaoRequest r){Usuario c=user(); Empresa e=empresas.findById(r.empresaId()).orElseThrow(()->new IllegalArgumentException("Empresa não encontrada")); Agendamento a=agendamentos.findById(r.agendamentoId()).orElseThrow(()->new IllegalArgumentException("Agendamento não encontrado")); if(a.getStatus()!=StatusAgendamento.CONCLUIDO) throw new IllegalArgumentException("Só é possível avaliar atendimento concluído"); Avaliacao av=new Avaliacao(); av.setCliente(c);av.setEmpresa(e);av.setAgendamento(a);av.setNota(r.nota());av.setComentario(r.comentario()); repo.save(av); atualizarMedia(e); return toResponse(av);} public List<AvaliacaoResponse> porEmpresa(Long id){Empresa e=empresas.findById(id).orElseThrow(); return repo.findByEmpresa(e).stream().map(this::toResponse).toList();} private void atualizarMedia(Empresa e){var lista=repo.findByEmpresa(e); double media=lista.stream().mapToInt(Avaliacao::getNota).average().orElse(0); e.setMediaAvaliacao(Math.round(media*10)/10.0); empresas.save(e);} private AvaliacaoResponse toResponse(Avaliacao a){return new AvaliacaoResponse(a.getId(),a.getCliente().getNome(),a.getEmpresa().getId(),a.getNota(),a.getComentario(),a.getCriadoEm());} }
+package br.com.marquesautodetail.api.avaliacao;
+
+import br.com.marquesautodetail.api.agendamento.Agendamento;
+import br.com.marquesautodetail.api.agendamento.AgendamentoRepository;
+import br.com.marquesautodetail.api.agendamento.StatusAgendamento;
+import br.com.marquesautodetail.api.avaliacao.dto.AvaliacaoRequest;
+import br.com.marquesautodetail.api.avaliacao.dto.AvaliacaoResponse;
+import br.com.marquesautodetail.api.empresa.Empresa;
+import br.com.marquesautodetail.api.empresa.EmpresaRepository;
+import br.com.marquesautodetail.api.security.AuthenticatedUserService;
+import br.com.marquesautodetail.api.usuario.Usuario;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class AvaliacaoService {
+
+    private final AvaliacaoRepository repo;
+    private final EmpresaRepository empresas;
+    private final AgendamentoRepository agendamentos;
+    private final AuthenticatedUserService authenticatedUser;
+
+    public AvaliacaoService(
+            AvaliacaoRepository repo,
+            EmpresaRepository empresas,
+            AgendamentoRepository agendamentos,
+            AuthenticatedUserService authenticatedUser
+    ) {
+        this.repo = repo;
+        this.empresas = empresas;
+        this.agendamentos = agendamentos;
+        this.authenticatedUser = authenticatedUser;
+    }
+
+    @Transactional
+    public AvaliacaoResponse criar(AvaliacaoRequest request) {
+        Usuario cliente = authenticatedUser.clienteAtual();
+        Empresa empresa = empresas.findById(request.empresaId())
+                .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
+        Agendamento agendamento = agendamentos.findById(request.agendamentoId())
+                .orElseThrow(() -> new IllegalArgumentException("Agendamento não encontrado"));
+
+        if (!agendamento.getCliente().getId().equals(cliente.getId())) {
+            throw new AccessDeniedException("Você só pode avaliar seus próprios agendamentos");
+        }
+        if (!agendamento.getEmpresa().getId().equals(empresa.getId())) {
+            throw new IllegalArgumentException("A empresa não corresponde ao agendamento");
+        }
+        if (agendamento.getStatus() != StatusAgendamento.CONCLUIDO) {
+            throw new IllegalArgumentException("Só é possível avaliar atendimento concluído");
+        }
+        if (repo.existsByAgendamento(agendamento)) {
+            throw new IllegalArgumentException("Este agendamento já foi avaliado");
+        }
+
+        Avaliacao avaliacao = new Avaliacao();
+        avaliacao.setCliente(cliente);
+        avaliacao.setEmpresa(empresa);
+        avaliacao.setAgendamento(agendamento);
+        avaliacao.setNota(request.nota());
+        avaliacao.setComentario(request.comentario());
+        repo.save(avaliacao);
+        atualizarMedia(empresa);
+        return toResponse(avaliacao);
+    }
+
+    public List<AvaliacaoResponse> porEmpresa(Long id) {
+        Empresa empresa = empresas.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
+        return repo.findByEmpresa(empresa).stream().map(this::toResponse).toList();
+    }
+
+    private void atualizarMedia(Empresa empresa) {
+        var lista = repo.findByEmpresa(empresa);
+        double media = lista.stream().mapToInt(Avaliacao::getNota).average().orElse(0);
+        empresa.setMediaAvaliacao(Math.round(media * 10) / 10.0);
+        empresas.save(empresa);
+    }
+
+    private AvaliacaoResponse toResponse(Avaliacao avaliacao) {
+        return new AvaliacaoResponse(
+                avaliacao.getId(),
+                avaliacao.getCliente().getNome(),
+                avaliacao.getEmpresa().getId(),
+                avaliacao.getNota(),
+                avaliacao.getComentario(),
+                avaliacao.getCriadoEm()
+        );
+    }
+}

@@ -1,127 +1,112 @@
 # Marques AutoDetail
 
-Aplicativo Android nativo em Kotlin/XML com backend Spring Boot. O Android continua consumindo a API REST do Spring Boot via Retrofit; o banco online passa a ser Supabase PostgreSQL.
+Aplicativo Android nativo em Kotlin/XML para clientes e empresas de estética automotiva. O app consome uma API Spring Boot com autenticação JWT; a API persiste os dados no Supabase PostgreSQL.
 
-## Arquitetura
+## Estrutura
 
-- `app`: aplicativo Android nativo.
-- `marques-autodetail-api`: API Spring Boot com autenticação JWT, Spring Security e Spring Data JPA.
-- Banco de dados: Supabase PostgreSQL.
+- `app`: aplicativo Android, Retrofit, sessão JWT e telas de cliente/empresa.
+- `marques-autodetail-api`: API Spring Boot, Spring Security, JPA e PostgreSQL.
+- `marques-autodetail-api/database`: criação e atualização do banco Supabase.
+- `render.yaml` e `Dockerfile`: deploy da API no Render.
+- `INICIAR_APRESENTACAO.bat`: compila, instala e abre o app no emulador configurado.
 
-## Variaveis de ambiente da API
+## API online
 
-Configure estas variaveis no ambiente local e tambem no provedor de deploy:
+- Base: `https://marques-autodetail-api.onrender.com/api/`
+- Teste público: `GET /empresas`
+
+O plano gratuito do Render pode levar cerca de um minuto para iniciar após um período sem uso. Abra o endpoint público antes da apresentação.
+
+## Variáveis da API
+
+Crie `marques-autodetail-api/.env` a partir de `.env.example`:
 
 ```env
-DATABASE_URL=jdbc:postgresql://db.PROJECT_REF.supabase.co:5432/postgres?sslmode=require
-DATABASE_USERNAME=marques_api_user
-DATABASE_PASSWORD=sua-senha-do-usuario-do-backend
-JWT_SECRET=um-segredo-longo-com-pelo-menos-32-caracteres
+DATABASE_URL=jdbc:postgresql://HOST:5432/postgres?sslmode=require
+DATABASE_USERNAME=usuario_do_banco
+DATABASE_PASSWORD=senha_do_banco
+JWT_SECRET=segredo_aleatorio_com_32_ou_mais_caracteres
 PORT=8080
+JPA_SHOW_SQL=false
+JPA_FORMAT_SQL=false
 ```
 
-Para ambientes sem IPv6, use a connection string do Supavisor em session mode e mantenha o prefixo JDBC:
+`JWT_SECRET` é obrigatório. O arquivo `.env` e outras credenciais não são versionados.
 
-```env
-DATABASE_URL=jdbc:postgresql://aws-0-REGION.pooler.supabase.com:5432/postgres?sslmode=require
-DATABASE_USERNAME=marques_api_user.PROJECT_REF
-DATABASE_PASSWORD=sua-senha-do-usuario-do-backend
-```
+## Supabase
 
-Evite o pooler em transaction mode para esta API JPA/Hibernate, porque esse modo pode ser incompativel com prepared statements.
+1. Crie o projeto e abra `SQL Editor`.
+2. Em um banco novo, execute `marques-autodetail-api/database/supabase_schema.sql`.
+3. Em um banco criado com uma versão anterior, execute também `supabase_hardening_20260611.sql`.
+4. Use a conexão direta se o host aceitar IPv6 ou o Session Pooler na porta 5432.
+5. Configure no Render a URL em formato JDBC e o usuário/senha do PostgreSQL.
 
-## Configurar Supabase
+O Android não usa chave Supabase e não acessa as tabelas diretamente. Toda autorização passa pela API Spring Boot.
 
-1. Crie um projeto no Supabase.
-2. No Dashboard, abra `Project Settings > Database` ou o botao `Connect`.
-3. Copie a connection string de `Direct connection` se o deploy suportar IPv6, ou `Session pooler` se precisar de IPv4.
-4. Converta a URL para JDBC adicionando `jdbc:` no inicio e `?sslmode=require` no final quando necessario.
-5. Configure `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD` e `JWT_SECRET` no ambiente da API.
+## Executar o backend
 
-O script SQL cria a role `marques_api_user` com permissoes e policies para a API Spring Boot. A senha dessa role deve ser definida fora do Git, por exemplo no SQL Editor:
+Requisitos: Java 17 e Maven 3.9+.
 
-```sql
-alter role marques_api_user with password 'uma-senha-forte';
-```
-
-## Executar o SQL
-
-1. Abra `SQL Editor` no Supabase.
-2. Cole o conteudo de `marques-autodetail-api/database/supabase_schema.sql`.
-3. Execute o script.
-4. Confirme que as tabelas `usuarios`, `enderecos`, `empresas`, `servicos`, `agendamentos`, `favoritos`, `avaliacoes` e `horarios_disponiveis` foram criadas.
-
-O script cria constraints, foreign keys, indices, dados iniciais da empresa de demonstracao, servicos e horarios disponiveis. Ele tambem habilita RLS nas tabelas publicas. Como o Android nao acessa Supabase diretamente, a API Spring Boot deve conectar com usuario/senha do banco, nao com anon key.
-
-## Execucao local da API
-
-No diretorio `marques-autodetail-api`, configure as variaveis de ambiente e execute:
-
-```bash
+```powershell
+cd marques-autodetail-api
+mvn clean package
 mvn spring-boot:run
 ```
 
-Ou gere o pacote:
+Localmente a API fica em `http://localhost:8080/api`. O build completo executa os testes unitários.
 
-```bash
-mvn clean package
-java -jar target/marques-autodetail-api-0.0.1-SNAPSHOT.jar
-```
+## Executar o Android
 
-A API sobe em `http://localhost:8080/api` por padrao.
+Requisitos: Android Studio, Android SDK e um emulador ou aparelho Android.
 
-## Android
+1. Abra a pasta raiz `marques-autodetail`.
+2. Aguarde o Gradle Sync.
+3. Selecione um dispositivo Android.
+4. Execute a configuração `app`.
 
-O app permanece usando Retrofit em `app/src/main/java/com/MatheusFoganholi/marquesautodetail/network/RetrofitClient.kt`.
+A URL online fica em `app/build.gradle.kts`, no campo `API_BASE_URL`. Para uma API local no emulador, use `http://10.0.2.2:8080/api/` e permita HTTP apenas no build de debug.
 
-Durante desenvolvimento no emulador:
+## Fluxo de teste
 
-```kotlin
-private const val BASE_URL = "http://10.0.2.2:8080/api/"
-```
+1. Cadastre uma conta `CLIENTE`.
+2. Faça login e confirme a abertura da tela inicial.
+3. Abra uma empresa e salve-a nos favoritos.
+4. Escolha um serviço, data e horário e crie o agendamento.
+5. Saia e entre com uma conta `EMPRESA`.
+6. Confirme ou recuse o agendamento recebido.
+7. Atualize perfil, serviços e horários da empresa.
+8. Volte à conta cliente e consulte o histórico.
 
-Depois do deploy da API Spring Boot, troque para a URL publica do backend:
+Erros esperados:
 
-```kotlin
-private const val BASE_URL = "https://sua-api-online.com/api/"
-```
+- senha incorreta: HTTP 401;
+- token ausente/inválido/expirado: HTTP 401;
+- alteração de recurso de outra empresa/cliente: HTTP 403;
+- campos inválidos: HTTP 400;
+- e-mail duplicado: HTTP 400;
+- conflito de integridade: HTTP 409.
 
-## Testes e build
+## Endpoints principais
 
-Para validar o backend:
+| Método | Endpoint | Acesso | Finalidade |
+|---|---|---|---|
+| POST | `/auth/login` | Público | Login e geração do JWT |
+| POST | `/auth/register/cliente` | Público | Cadastro de cliente |
+| POST | `/auth/register/empresa` | Público | Cadastro de empresa |
+| GET | `/auth/me` | Autenticado | Dados da sessão |
+| GET | `/empresas` | Público | Lista de empresas |
+| GET | `/empresas/proximas` | Público | Empresas ordenadas por distância |
+| GET | `/empresas/{id}` | Público | Detalhes da empresa |
+| PUT | `/empresas/{id}` | Dona da empresa | Atualização do perfil |
+| GET/POST | `/empresas/{id}/servicos` | GET público, POST dona | Consulta e cadastro de serviços |
+| PUT/DELETE | `/servicos/{id}` | Dona da empresa | Atualização e desativação |
+| GET | `/empresas/{id}/horarios/disponiveis` | Público | Horários livres por serviço/data |
+| POST | `/agendamentos` | Cliente | Criação de agendamento |
+| GET | `/agendamentos/me` | Autenticado | Histórico do cliente ou empresa |
+| PUT | `/agendamentos/{id}/{acao}` | Proprietário | Confirmar, recusar, concluir ou cancelar |
+| GET/POST/DELETE | `/favoritos/...` | Cliente | Gerenciamento de favoritos |
+| GET/POST | `/empresas/{id}/avaliacoes`, `/avaliacoes` | GET público, POST cliente | Avaliações concluídas |
 
-```bash
-cd marques-autodetail-api
-mvn clean package
-```
+## Deploy
 
-Para validar o Android, use o Gradle wrapper na raiz:
-
-```bash
-./gradlew test
-```
-
-## Deploy da API
-
-Qualquer plataforma que execute Java 17 e exponha porta HTTP pode hospedar a API, como Render, Railway, Fly.io, DigitalOcean App Platform ou um VPS.
-
-O backend tambem possui um `Dockerfile` em `marques-autodetail-api/Dockerfile`, entao pode ser publicado como container. Para Render, ha um `render.yaml` na raiz com as variaveis sensiveis marcadas para configuracao manual no painel.
-
-Checklist de deploy:
-
-- Configurar Java 17.
-- Build command: `mvn clean package`.
-- Start command: `java -jar target/marques-autodetail-api-0.0.1-SNAPSHOT.jar`.
-- Definir `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD` e `JWT_SECRET`.
-- Em provedores como Render, nao defina `PORT` manualmente; use a porta injetada pelo provedor.
-- Executar `marques-autodetail-api/database/supabase_schema.sql` no Supabase antes de iniciar a API com `spring.jpa.hibernate.ddl-auto=validate`.
-- Atualizar `BASE_URL` no Android para a URL publica da API.
-
-Checklist para deixar online:
-
-1. Criar o projeto no Supabase.
-2. Executar o SQL em `marques-autodetail-api/database/supabase_schema.sql`.
-3. Criar o servico web no provedor usando Java 17 ou Docker.
-4. Configurar as variaveis de ambiente do backend.
-5. Fazer um teste de login em `/api/auth/login` com `empresa@marques.com` e senha `123456`.
-6. Atualizar `BASE_URL` no Android para a URL publica do backend.
+O Render usa `marques-autodetail-api/Dockerfile`. Configure `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD` e `JWT_SECRET`; não defina `PORT`, pois o Render injeta esse valor. Depois de enviar a branch ao GitHub, faça um novo deploy para publicar as correções.

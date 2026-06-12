@@ -3,7 +3,6 @@ package com.MatheusFoganholi.marquesautodetail.util
 import android.content.Context
 import com.MatheusFoganholi.marquesautodetail.dto.AuthResponse
 import com.MatheusFoganholi.marquesautodetail.model.UserRole
-import com.MatheusFoganholi.marquesautodetail.model.Usuario
 
 class SessionManager(context: Context) {
     private val prefs = context.getSharedPreferences("marques_session", Context.MODE_PRIVATE)
@@ -16,17 +15,6 @@ class SessionManager(context: Context) {
             .putString("email", auth.email)
             .putString("role", auth.role)
             .putLong("empresaId", auth.empresaId ?: -1L)
-            .apply()
-    }
-
-    // Mantido apenas para compatibilidade com telas antigas. O fluxo real usa salvarAuth().
-    fun salvarUsuario(usuario: Usuario) {
-        val nomeSeguro = usuario.nome.takeIf { it.isNotBlank() }
-            ?: usuario.email.substringBefore("@").replaceFirstChar { it.uppercase() }
-        prefs.edit()
-            .putString("nome", nomeSeguro)
-            .putString("email", usuario.email)
-            .putString("role", usuario.role)
             .apply()
     }
 

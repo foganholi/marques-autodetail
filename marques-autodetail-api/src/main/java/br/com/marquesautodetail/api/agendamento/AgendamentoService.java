@@ -5,108 +5,140 @@ import br.com.marquesautodetail.api.agendamento.dto.AgendamentoResponse;
 import br.com.marquesautodetail.api.empresa.Empresa;
 import br.com.marquesautodetail.api.empresa.EmpresaRepository;
 import br.com.marquesautodetail.api.horario.HorarioService;
+import br.com.marquesautodetail.api.security.AuthenticatedUserService;
 import br.com.marquesautodetail.api.servico.Servico;
 import br.com.marquesautodetail.api.servico.ServicoRepository;
 import br.com.marquesautodetail.api.usuario.Role;
 import br.com.marquesautodetail.api.usuario.Usuario;
-import br.com.marquesautodetail.api.usuario.UsuarioRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class AgendamentoService {
+
     private final AgendamentoRepository repo;
-    private final UsuarioRepository usuarios;
     private final EmpresaRepository empresas;
     private final ServicoRepository servicos;
     private final HorarioService horarioService;
+    private final AuthenticatedUserService authenticatedUser;
 
     public AgendamentoService(
             AgendamentoRepository repo,
-            UsuarioRepository usuarios,
             EmpresaRepository empresas,
             ServicoRepository servicos,
-            HorarioService horarioService
+            HorarioService horarioService,
+            AuthenticatedUserService authenticatedUser
     ) {
         this.repo = repo;
-        this.usuarios = usuarios;
         this.empresas = empresas;
         this.servicos = servicos;
         this.horarioService = horarioService;
-    }
-
-    private Usuario usuarioLogado() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return usuarios.findByEmail(email).orElseThrow();
+        this.authenticatedUser = authenticatedUser;
     }
 
     @Transactional
-    public AgendamentoResponse criar(AgendamentoRequest r) {
-        Usuario cliente = usuarioLogado();
-        if (cliente.getRole() != Role.CLIENTE) {
-            throw new IllegalArgumentException("Somente cliente pode criar agendamento");
+    public AgendamentoResponse criar(AgendamentoRequest request) {
+        Usuario cliente = authenticatedUser.clienteAtual();
+        if (request.data().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("A data do agendamento não pode estar no passado");
         }
 
-        Empresa empresa = empresas.findById(r.empresaId())
+        Empresa empresa = empresas.findById(request.empresaId())
                 .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
-        Servico servico = servicos.findById(r.servicoId())
+        Servico servico = servicos.findById(request.servicoId())
                 .orElseThrow(() -> new IllegalArgumentException("Serviço não encontrado"));
 
-        boolean disponivel = horarioService.horarioDisponivel(r.empresaId(), r.servicoId(), r.data(), r.hora());
+        if (!servico.getEmpresa().getId().equals(empresa.getId()) || !Boolean.TRUE.equals(servico.getAtivo())) {
+            throw new IllegalArgumentException("O serviço não pertence à empresa informada ou está inativo");
+        }
+
+        boolean disponivel = horarioService.horarioDisponivel(
+                request.empresaId(),
+                request.servicoId(),
+                request.data(),
+                request.hora()
+        );
         if (!disponivel) {
             throw new IllegalArgumentException("Horário indisponível para esta empresa, serviço ou data");
         }
 
-        Agendamento a = new Agendamento();
-        a.setCliente(cliente);
-        a.setEmpresa(empresa);
-        a.setServico(servico);
-        a.setData(r.data());
-        a.setHora(r.hora());
-        a.setObservacao(r.observacao());
-        a.setStatus(StatusAgendamento.PENDENTE);
-        return toResponse(repo.save(a));
+        Agendamento agendamento = new Agendamento();
+        agendamento.setCliente(cliente);
+        agendamento.setEmpresa(empresa);
+        agendamento.setServico(servico);
+        agendamento.setData(request.data());
+        agendamento.setHora(request.hora());
+        agendamento.setObservacao(request.observacao());
+        agendamento.setStatus(StatusAgendamento.PENDENTE);
+        return toResponse(repo.save(agendamento));
     }
 
     public List<AgendamentoResponse> meus() {
-        Usuario u = usuarioLogado();
-        if (u.getRole() == Role.EMPRESA) {
-            Empresa e = empresas.findByUsuario(u)
-                    .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada para usuário"));
-            return repo.findByEmpresaOrderByDataDescHoraDesc(e).stream().map(this::toResponse).toList();
+        Usuario usuario = authenticatedUser.usuarioAtual();
+        if (usuario.getRole() == Role.EMPRESA) {
+            Empresa empresa = authenticatedUser.empresaAtual();
+            return repo.findByEmpresaOrderByDataDescHoraDesc(empresa).stream().map(this::toResponse).toList();
         }
-        return repo.findByClienteOrderByDataDescHoraDesc(u).stream().map(this::toResponse).toList();
+        return repo.findByClienteOrderByDataDescHoraDesc(usuario).stream().map(this::toResponse).toList();
     }
 
     public List<AgendamentoResponse> porEmpresa(Long empresaId) {
-        Empresa e = empresas.findById(empresaId)
-                .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
-        return repo.findByEmpresaOrderByDataDescHoraDesc(e).stream().map(this::toResponse).toList();
+        Empresa empresa = authenticatedUser.exigirEmpresa(empresaId);
+        return repo.findByEmpresaOrderByDataDescHoraDesc(empresa).stream().map(this::toResponse).toList();
     }
 
     @Transactional
-    public AgendamentoResponse status(Long id, StatusAgendamento st) {
-        Agendamento a = repo.findById(id)
+    public AgendamentoResponse alterarStatus(Long id, StatusAgendamento novoStatus) {
+        Agendamento agendamento = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Agendamento não encontrado"));
-        a.setStatus(st);
-        return toResponse(repo.save(a));
+        Usuario usuario = authenticatedUser.usuarioAtual();
+
+        if (novoStatus == StatusAgendamento.CANCELADO) {
+            if (usuario.getRole() != Role.CLIENTE || !agendamento.getCliente().getId().equals(usuario.getId())) {
+                throw new AccessDeniedException("Somente o cliente do agendamento pode cancelá-lo");
+            }
+            if (agendamento.getStatus() == StatusAgendamento.CONCLUIDO) {
+                throw new IllegalArgumentException("Um agendamento concluído não pode ser cancelado");
+            }
+        } else {
+            Empresa empresa = authenticatedUser.empresaAtual();
+            if (!agendamento.getEmpresa().getId().equals(empresa.getId())) {
+                throw new AccessDeniedException("Você não pode alterar agendamentos de outra empresa");
+            }
+            validarTransicaoEmpresa(agendamento.getStatus(), novoStatus);
+        }
+
+        agendamento.setStatus(novoStatus);
+        return toResponse(repo.save(agendamento));
     }
 
-    private AgendamentoResponse toResponse(Agendamento a) {
+    private void validarTransicaoEmpresa(StatusAgendamento atual, StatusAgendamento novoStatus) {
+        boolean valida = switch (novoStatus) {
+            case CONFIRMADO, RECUSADO -> atual == StatusAgendamento.PENDENTE;
+            case CONCLUIDO -> atual == StatusAgendamento.CONFIRMADO;
+            default -> false;
+        };
+        if (!valida) {
+            throw new IllegalArgumentException("Transição de status inválida: " + atual + " para " + novoStatus);
+        }
+    }
+
+    private AgendamentoResponse toResponse(Agendamento agendamento) {
         return new AgendamentoResponse(
-                a.getId(),
-                a.getCliente().getNome(),
-                a.getEmpresa().getId(),
-                a.getEmpresa().getNomeFantasia(),
-                a.getServico().getId(),
-                a.getServico().getNome(),
-                a.getData(),
-                a.getHora(),
-                a.getStatus().name(),
-                a.getObservacao()
+                agendamento.getId(),
+                agendamento.getCliente().getNome(),
+                agendamento.getEmpresa().getId(),
+                agendamento.getEmpresa().getNomeFantasia(),
+                agendamento.getServico().getId(),
+                agendamento.getServico().getNome(),
+                agendamento.getData(),
+                agendamento.getHora(),
+                agendamento.getStatus().name(),
+                agendamento.getObservacao()
         );
     }
 }

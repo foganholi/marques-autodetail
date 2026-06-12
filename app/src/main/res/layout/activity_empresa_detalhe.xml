@@ -70,6 +70,17 @@
                 android:textColor="@color/mad_text_muted" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btnFavoritarEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/mad_secondary"
+            android:minHeight="48dp"
+            android:text="Salvar nos favoritos"
+            android:textColor="@color/mad_text"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

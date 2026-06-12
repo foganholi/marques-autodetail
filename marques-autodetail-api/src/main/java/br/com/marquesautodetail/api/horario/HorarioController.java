@@ -2,6 +2,8 @@ package br.com.marquesautodetail.api.horario;
 
 import br.com.marquesautodetail.api.horario.dto.HorarioRequest;
 import br.com.marquesautodetail.api.horario.dto.HorarioResponse;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,11 +33,13 @@ public class HorarioController {
     }
 
     @PostMapping("/empresas/{empresaId}/horarios")
-    public HorarioResponse criar(@PathVariable Long empresaId, @RequestBody HorarioRequest r) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public HorarioResponse criar(@PathVariable Long empresaId, @Valid @RequestBody HorarioRequest r) {
         return service.criar(empresaId, r);
     }
 
     @DeleteMapping("/horarios/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id) {
         service.remover(id);
     }

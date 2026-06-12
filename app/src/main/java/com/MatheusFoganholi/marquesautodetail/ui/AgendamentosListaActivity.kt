@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.MatheusFoganholi.marquesautodetail.R
 import com.MatheusFoganholi.marquesautodetail.adapter.AgendamentoAdapter
-import com.MatheusFoganholi.marquesautodetail.data.LocalAgendamentoRepository
 import com.MatheusFoganholi.marquesautodetail.dto.AgendamentoResponse
 import com.MatheusFoganholi.marquesautodetail.dto.toModel
 import com.MatheusFoganholi.marquesautodetail.model.Agendamento
@@ -22,7 +21,6 @@ import retrofit2.Response
 class AgendamentosListaActivity : AppCompatActivity() {
 
     private lateinit var adapter: AgendamentoAdapter
-    private lateinit var repository: LocalAgendamentoRepository
     private var modoEmpresa: Boolean = false
     private lateinit var txtEstadoVazio: TextView
 
@@ -30,7 +28,6 @@ class AgendamentosListaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agendamentos_lista)
 
-        repository = LocalAgendamentoRepository(this)
         modoEmpresa = SessionManager(this).roleAtual() == UserRole.EMPRESA
 
         findViewById<TextView>(R.id.btnVoltarListaAgendamentos).setOnClickListener { finish() }
@@ -59,12 +56,7 @@ class AgendamentosListaActivity : AppCompatActivity() {
     }
 
     private fun carregarAgendamentos() {
-        val session = SessionManager(this)
-        val chamada = if (modoEmpresa && session.empresaIdAtual() != null) {
-            RetrofitClient.api(this).listarAgendamentosEmpresa(session.empresaIdAtual()!!)
-        } else {
-            RetrofitClient.api(this).listarMeusAgendamentos()
-        }
+        val chamada = RetrofitClient.api(this).listarMeusAgendamentos()
 
         chamada.enqueue(object : Callback<List<AgendamentoResponse>> {
             override fun onResponse(call: Call<List<AgendamentoResponse>>, response: Response<List<AgendamentoResponse>>) {
@@ -74,21 +66,20 @@ class AgendamentosListaActivity : AppCompatActivity() {
                     adapter.atualizarLista(modelos)
                     atualizarEstadoVazio(modelos)
                 } else {
-                    carregarLocal()
+                    exibirFalha()
                 }
             }
 
             override fun onFailure(call: Call<List<AgendamentoResponse>>, t: Throwable) {
-                carregarLocal()
+                exibirFalha()
             }
         })
     }
 
-    private fun carregarLocal() {
-        val lista = repository.listar()
-        adapter.atualizarLista(lista)
-        atualizarEstadoVazio(lista)
-        Toast.makeText(this, "API indisponível. Exibindo fallback local temporário.", Toast.LENGTH_SHORT).show()
+    private fun exibirFalha() {
+        adapter.atualizarLista(emptyList())
+        txtEstadoVazio.visibility = android.view.View.VISIBLE
+        txtEstadoVazio.text = "Não foi possível carregar os agendamentos. Verifique a conexão e tente novamente."
     }
 
     private fun atualizarEstadoVazio(lista: List<Agendamento>) {
@@ -113,20 +104,14 @@ class AgendamentosListaActivity : AppCompatActivity() {
                     Toast.makeText(this@AgendamentosListaActivity, "Status atualizado no backend", Toast.LENGTH_SHORT).show()
                     carregarAgendamentos()
                 } else {
-                    atualizarLocal(agendamento, if (confirmar) "CONFIRMADO" else "RECUSADO")
+                    Toast.makeText(this@AgendamentosListaActivity, "Não foi possível atualizar o status", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<AgendamentoResponse>, t: Throwable) {
-                atualizarLocal(agendamento, if (confirmar) "CONFIRMADO" else "RECUSADO")
+                Toast.makeText(this@AgendamentosListaActivity, "Falha de conexão. O status não foi alterado.", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    private fun atualizarLocal(agendamento: Agendamento, status: String) {
-        val id = agendamento.id ?: return
-        repository.atualizarStatus(id, status)
-        Toast.makeText(this, "API indisponível. Status alterado só no fallback local.", Toast.LENGTH_SHORT).show()
-        carregarLocal()
-    }
 }

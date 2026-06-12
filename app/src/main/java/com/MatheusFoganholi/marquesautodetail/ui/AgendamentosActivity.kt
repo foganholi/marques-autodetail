@@ -14,13 +14,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.MatheusFoganholi.marquesautodetail.R
-import com.MatheusFoganholi.marquesautodetail.data.LocalAgendamentoRepository
 import com.MatheusFoganholi.marquesautodetail.data.LocalMarketplaceRepository
 import com.MatheusFoganholi.marquesautodetail.dto.AgendamentoRequest
 import com.MatheusFoganholi.marquesautodetail.dto.AgendamentoResponse
 import com.MatheusFoganholi.marquesautodetail.dto.ServicoResponse
 import com.MatheusFoganholi.marquesautodetail.dto.toModel
-import com.MatheusFoganholi.marquesautodetail.model.Agendamento
 import com.MatheusFoganholi.marquesautodetail.model.Servico
 import com.MatheusFoganholi.marquesautodetail.network.RetrofitClient
 import com.MatheusFoganholi.marquesautodetail.util.SessionManager
@@ -275,19 +273,11 @@ class AgendamentosActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<AgendamentoResponse>, t: Throwable) {
-                val agendamentoFallback = Agendamento(
-                    id = null,
-                    nomeCliente = nomeCliente,
-                    data = data,
-                    hora = hora,
-                    servico = servico.nome,
-                    empresaId = empresaId,
-                    empresaNome = empresaNome,
-                    status = "PENDENTE"
-                )
-                LocalAgendamentoRepository(this@AgendamentosActivity).salvar(agendamentoFallback)
-                Toast.makeText(this@AgendamentosActivity, "API indisponível. Salvo como fallback local temporário.", Toast.LENGTH_LONG).show()
-                finish()
+                Toast.makeText(
+                    this@AgendamentosActivity,
+                    "Falha de conexão. O agendamento não foi salvo; tente novamente.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
     }

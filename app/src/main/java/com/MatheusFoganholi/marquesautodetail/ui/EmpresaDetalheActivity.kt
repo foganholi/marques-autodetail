@@ -2,6 +2,7 @@ package com.MatheusFoganholi.marquesautodetail.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -36,7 +37,30 @@ class EmpresaDetalheActivity : AppCompatActivity() {
         setContentView(R.layout.activity_empresa_detalhe)
         empresaId = intent.getIntExtra(EXTRA_EMPRESA_ID, -1)
         findViewById<TextView>(R.id.btnVoltarDetalhe).setOnClickListener { finish() }
+        findViewById<Button>(R.id.btnFavoritarEmpresa).setOnClickListener { favoritarEmpresa() }
         carregarEmpresaReal()
+    }
+
+    private fun favoritarEmpresa() {
+        if (empresaId <= 0) return
+        val botao = findViewById<Button>(R.id.btnFavoritarEmpresa)
+        botao.isEnabled = false
+        RetrofitClient.api(this).favoritarEmpresa(empresaId.toLong()).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                botao.isEnabled = true
+                if (response.isSuccessful) {
+                    botao.text = "Salva nos favoritos"
+                    Toast.makeText(this@EmpresaDetalheActivity, "Empresa adicionada aos favoritos", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@EmpresaDetalheActivity, "Não foi possível favoritar esta empresa", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, throwable: Throwable) {
+                botao.isEnabled = true
+                Toast.makeText(this@EmpresaDetalheActivity, "Falha de conexão ao favoritar", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun carregarEmpresaReal() {
