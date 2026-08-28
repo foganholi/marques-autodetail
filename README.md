@@ -124,3 +124,11 @@ Checklist para deixar online:
 4. Configurar as variaveis de ambiente do backend.
 5. Fazer um teste de login em `/api/auth/login` com `empresa@marques.com` e senha `123456`.
 6. Atualizar `BASE_URL` no Android para a URL publica do backend.
+
+## Qualidade de Software e Testes
+
+O mapa mental da atividade acadêmica apresenta as principais características do projeto, seu funcionamento, finalidade, camadas mais suscetíveis a falhas e os testes prioritários.
+
+[Ver mapa mental e análise completa](docs/MAPA_MENTAL_QUALIDADE_TESTES.md)
+
+![Mapa mental — Qualidade de Software e Testes](docs/MAPA_MENTAL_QUALIDADE_TESTES.png)

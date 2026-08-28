@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Mapa mental do projeto Marques AutoDetail — Qualidade de Software e Testes</title>
+  <desc id="desc">Mapa mental com definição, finalidade, funcionamento, pontos vulneráveis, qualidade de software e testes prioritários do aplicativo Marques AutoDetail.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#eef4fa"/>
+    </linearGradient>
+    <linearGradient id="center" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#123b5d"/>
+      <stop offset="1" stop-color="#0b6b83"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 32px Arial, Helvetica, sans-serif; fill: #17324d; letter-spacing: .6px; }
+      .subtitle { font: 400 17px Arial, Helvetica, sans-serif; fill: #567086; }
+      .branch-title { font: 700 21px Arial, Helvetica, sans-serif; fill: #ffffff; }
+      .body { font: 400 17px Arial, Helvetica, sans-serif; fill: #243746; }
+      .body-strong { font: 700 17px Arial, Helvetica, sans-serif; fill: #17324d; }
+      .center-small { font: 600 18px Arial, Helvetica, sans-serif; fill: #d8f4ff; letter-spacing: 1px; }
+      .center-main { font: 700 30px Arial, Helvetica, sans-serif; fill: #ffffff; }
+      .center-sub { font: 400 17px Arial, Helvetica, sans-serif; fill: #e7f7fb; }
+      .box { fill: #ffffff; stroke-width: 2; }
+      .connector { fill: none; stroke-width: 5; stroke-linecap: round; opacity: .9; }
+      .dot { stroke: #ffffff; stroke-width: 3; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1200" fill="url(#bg)"/>
+  <circle cx="900" cy="610" r="330" fill="#dbeaf4" opacity="0.38"/>
+  <circle cx="900" cy="610" r="255" fill="#eaf3f8" opacity="0.72"/>
+
+  <text x="900" y="48" text-anchor="middle" class="title">MARQUES AUTODETAIL — MAPA MENTAL</text>
+  <text x="900" y="78" text-anchor="middle" class="subtitle">Qualidade de Software, Testes e Pontos Vulneráveis • análise do repositório atual</text>
+
+  <!-- Conectores da esquerda -->
+  <path d="M 710 500 C 610 430, 610 235, 555 220" class="connector" stroke="#2a78b8"/>
+  <path d="M 690 610 C 610 610, 610 595, 555 595" class="connector" stroke="#d68a14"/>
+  <path d="M 710 720 C 610 795, 610 970, 555 970" class="connector" stroke="#7a58b5"/>
+  <!-- Conectores da direita -->
+  <path d="M 1090 500 C 1190 425, 1190 235, 1245 220" class="connector" stroke="#1f9b72"/>
+  <path d="M 1110 610 C 1190 610, 1190 610, 1245 610" class="connector" stroke="#c54d5c"/>
+  <path d="M 1090 720 C 1190 795, 1190 975, 1245 975" class="connector" stroke="#167d91"/>
+
+  <circle cx="555" cy="220" r="10" fill="#2a78b8" class="dot"/>
+  <circle cx="555" cy="595" r="10" fill="#d68a14" class="dot"/>
+  <circle cx="555" cy="970" r="10" fill="#7a58b5" class="dot"/>
+  <circle cx="1245" cy="220" r="10" fill="#1f9b72" class="dot"/>
+  <circle cx="1245" cy="610" r="10" fill="#c54d5c" class="dot"/>
+  <circle cx="1245" cy="975" r="10" fill="#167d91" class="dot"/>
+
+  <!-- Centro -->
+  <path d="M760 470 L1040 470 L1130 610 L1040 750 L760 750 L670 610 Z" fill="url(#center)" stroke="#ffffff" stroke-width="7"/>
+  <text x="900" y="545" text-anchor="middle" class="center-small">PROJETO</text>
+  <text x="900" y="590" text-anchor="middle" class="center-main">MARQUES</text>
+  <text x="900" y="627" text-anchor="middle" class="center-main">AUTODETAIL</text>
+  <text x="900" y="670" text-anchor="middle" class="center-sub">Aplicativo Android + API REST</text>
+  <text x="900" y="698" text-anchor="middle" class="center-sub">foco: qualidade e confiabilidade</text>
+
+  <!-- 1. O que é -->
+  <rect x="70" y="105" width="485" height="66" rx="20" fill="#2a78b8"/>
+  <text x="95" y="147" class="branch-title">1. O QUE É O PROJETO?</text>
+  <rect x="70" y="185" width="485" height="205" rx="22" class="box" stroke="#9ac7e8"/>
+  <circle cx="99" cy="226" r="6" fill="#2a78b8"/><text x="118" y="232" class="body">Marketplace de estética automotiva.</text>
+  <circle cx="99" cy="267" r="6" fill="#2a78b8"/><text x="118" y="273" class="body">Aplicativo Android nativo em Kotlin/XML.</text>
+  <circle cx="99" cy="308" r="6" fill="#2a78b8"/><text x="118" y="314" class="body">Backend Java Spring Boot com API REST.</text>
+  <circle cx="99" cy="349" r="6" fill="#2a78b8"/><text x="118" y="355" class="body">Dados persistidos no Supabase PostgreSQL.</text>
+
+  <!-- 2. Finalidade -->
+  <rect x="70" y="480" width="485" height="66" rx="20" fill="#d68a14"/>
+  <text x="95" y="522" class="branch-title">2. FINALIDADE DO SOFTWARE</text>
+  <rect x="70" y="560" width="485" height="205" rx="22" class="box" stroke="#f0c36f"/>
+  <circle cx="99" cy="601" r="6" fill="#d68a14"/><text x="118" y="607" class="body">Conectar clientes e empresas automotivas.</text>
+  <circle cx="99" cy="642" r="6" fill="#d68a14"/><text x="118" y="648" class="body">Localizar empresas e comparar serviços.</text>
+  <circle cx="99" cy="683" r="6" fill="#d68a14"/><text x="118" y="689" class="body">Agendar serviços por data e horário.</text>
+  <circle cx="99" cy="724" r="6" fill="#d68a14"/><text x="118" y="730" class="body">Centralizar agenda, histórico e avaliações.</text>
+
+  <!-- 3. Qualidade -->
+  <rect x="70" y="855" width="485" height="66" rx="20" fill="#7a58b5"/>
+  <text x="95" y="897" class="branch-title">3. QUALIDADE DE SOFTWARE</text>
+  <rect x="70" y="935" width="485" height="205" rx="22" class="box" stroke="#c2afe4"/>
+  <circle cx="99" cy="976" r="6" fill="#7a58b5"/><text x="118" y="982" class="body">Confiabilidade: evitar perda e duplicidade.</text>
+  <circle cx="99" cy="1017" r="6" fill="#7a58b5"/><text x="118" y="1023" class="body">Segurança: proteger conta, token e dados.</text>
+  <circle cx="99" cy="1058" r="6" fill="#7a58b5"/><text x="118" y="1064" class="body">Usabilidade: fluxos claros para os 2 perfis.</text>
+  <circle cx="99" cy="1099" r="6" fill="#7a58b5"/><text x="118" y="1105" class="body">Manutenibilidade: camadas e regras testáveis.</text>
+
+  <!-- 4. Funcionamento -->
+  <rect x="1245" y="105" width="485" height="66" rx="20" fill="#1f9b72"/>
+  <text x="1270" y="147" class="branch-title">4. COMO O SISTEMA FUNCIONA?</text>
+  <rect x="1245" y="185" width="485" height="245" rx="22" class="box" stroke="#85d4b7"/>
+  <text x="1275" y="225" class="body-strong">ANDROID (Kotlin/XML)</text>
+  <text x="1275" y="257" class="body">Telas → Retrofit → requisições HTTP/JWT</text>
+  <text x="1275" y="299" class="body-strong">API (Spring Boot)</text>
+  <text x="1275" y="331" class="body">Controller → Security → Service → JPA</text>
+  <text x="1275" y="373" class="body-strong">BANCO (Supabase PostgreSQL)</text>
+  <text x="1275" y="405" class="body">Usuários, empresas, serviços e agendamentos</text>
+
+  <!-- 5. Vulnerabilidades -->
+  <rect x="1245" y="480" width="485" height="66" rx="20" fill="#c54d5c"/>
+  <text x="1270" y="522" class="branch-title">5. PONTOS MAIS VULNERÁVEIS</text>
+  <rect x="1245" y="560" width="485" height="305" rx="22" class="box" stroke="#e5a3ab"/>
+  <circle cx="1274" cy="601" r="6" fill="#c54d5c"/><text x="1293" y="607" class="body">Permissões por papel e dono do recurso.</text>
+  <circle cx="1274" cy="642" r="6" fill="#c54d5c"/><text x="1293" y="648" class="body">JWT em SharedPreferences e expiração.</text>
+  <circle cx="1274" cy="683" r="6" fill="#c54d5c"/><text x="1293" y="689" class="body">HTTP liberado e log de corpo da requisição.</text>
+  <circle cx="1274" cy="724" r="6" fill="#c54d5c"/><text x="1293" y="730" class="body">Concorrência: dois clientes no mesmo horário.</text>
+  <circle cx="1274" cy="765" r="6" fill="#c54d5c"/><text x="1293" y="771" class="body">Validação e transições de agendamento.</text>
+  <circle cx="1274" cy="806" r="6" fill="#c54d5c"/><text x="1293" y="812" class="body">Falhas de rede, API, banco e sincronização.</text>
+  <circle cx="1274" cy="847" r="6" fill="#c54d5c"/><text x="1293" y="853" class="body">Permissão de localização e dados pessoais.</text>
+
+  <!-- 6. Testes -->
+  <rect x="1245" y="895" width="485" height="66" rx="20" fill="#167d91"/>
+  <text x="1270" y="937" class="branch-title">6. TESTES PRIORITÁRIOS</text>
+  <rect x="1245" y="975" width="485" height="165" rx="22" class="box" stroke="#86c8d3"/>
+  <circle cx="1274" cy="1016" r="6" fill="#167d91"/><text x="1293" y="1022" class="body">Unitários: serviços, horários e validações.</text>
+  <circle cx="1274" cy="1057" r="6" fill="#167d91"/><text x="1293" y="1063" class="body">Integração: API, JWT, autorização e banco.</text>
+  <circle cx="1274" cy="1098" r="6" fill="#167d91"/><text x="1293" y="1104" class="body">UI/E2E, rede indisponível, carga e concorrência.</text>
+
+  <text x="900" y="1175" text-anchor="middle" class="subtitle">Situação atual dos testes: somente exemplos padrão no Android e nenhum teste automatizado do backend.</text>
+</svg>
