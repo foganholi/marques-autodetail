@@ -1,14 +1,14 @@
 # Mapa Mental — Qualidade de Software e Testes
 
-Este material foi elaborado a partir da estrutura e do código atuais do projeto **Marques AutoDetail**.
+Este material foi elaborado a partir da estrutura e do código atuais do projeto **Elite AutoDetail**.
 
-![Mapa mental do Marques AutoDetail](./MAPA_MENTAL_QUALIDADE_TESTES.svg)
+![Mapa mental do Elite AutoDetail](./MAPA_MENTAL_QUALIDADE_TESTES.svg)
 
 ## Síntese para a atividade
 
 ### O que é o projeto?
 
-O Marques AutoDetail é um marketplace de estética automotiva. O produto possui um aplicativo Android nativo em Kotlin/XML, uma API REST em Java com Spring Boot e persistência de dados no Supabase PostgreSQL.
+O Elite AutoDetail é um marketplace de estética automotiva. O produto possui um aplicativo Android nativo em Kotlin/XML, uma API REST em Java com Spring Boot e persistência de dados no Supabase PostgreSQL.
 
 ### Qual é a finalidade do software?
 

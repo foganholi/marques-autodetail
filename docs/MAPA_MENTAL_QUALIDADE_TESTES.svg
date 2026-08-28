@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1360" viewBox="0 0 1800 1360" role="img" aria-labelledby="title desc">
-  <title id="title">Mapa mental do projeto Marques AutoDetail — Qualidade de Software e Testes</title>
-  <desc id="desc">Mapa mental com definição, finalidade, funcionamento, pontos vulneráveis, qualidade de software e testes prioritários do aplicativo Marques AutoDetail.</desc>
+  <title id="title">Mapa mental do projeto Elite AutoDetail — Qualidade de Software e Testes</title>
+  <desc id="desc">Mapa mental com definição, finalidade, funcionamento, pontos vulneráveis, qualidade de software e testes prioritários do aplicativo Elite AutoDetail.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#f8fbff"/>
@@ -29,7 +29,7 @@
   <circle cx="900" cy="610" r="330" fill="#dbeaf4" opacity="0.38"/>
   <circle cx="900" cy="610" r="255" fill="#eaf3f8" opacity="0.72"/>
 
-  <text x="900" y="48" text-anchor="middle" class="title">MARQUES AUTODETAIL — MAPA MENTAL</text>
+  <text x="900" y="48" text-anchor="middle" class="title">ELITE AUTODETAIL — MAPA MENTAL</text>
   <text x="900" y="78" text-anchor="middle" class="subtitle">Qualidade de Software, Testes e Pontos Vulneráveis • análise do repositório atual</text>
 
   <!-- Conectores da esquerda -->
@@ -54,7 +54,7 @@
   <!-- Centro -->
   <path d="M760 470 L1040 470 L1130 610 L1040 750 L760 750 L670 610 Z" fill="url(#center)" stroke="#ffffff" stroke-width="7"/>
   <text x="900" y="545" text-anchor="middle" class="center-small">PROJETO</text>
-  <text x="900" y="590" text-anchor="middle" class="center-main">MARQUES</text>
+  <text x="900" y="590" text-anchor="middle" class="center-main">ELITE</text>
   <text x="900" y="627" text-anchor="middle" class="center-main">AUTODETAIL</text>
   <text x="900" y="670" text-anchor="middle" class="center-sub">Aplicativo Android + API REST</text>
   <text x="900" y="698" text-anchor="middle" class="center-sub">foco: qualidade e confiabilidade</text>
