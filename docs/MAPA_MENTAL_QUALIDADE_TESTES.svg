@@ -120,13 +120,14 @@
   <!-- 7. Tecnologias -->
   <rect x="200" y="1165" width="1400" height="66" rx="20" fill="#3167a6"/>
   <text x="225" y="1207" class="branch-title">7. TECNOLOGIAS UTILIZADAS</text>
-  <rect x="200" y="1245" width="1400" height="80" rx="22" class="box" stroke="#96b4da"/>
-  <text x="245" y="1278" class="body-strong">APLICATIVO</text>
-  <text x="245" y="1307" class="body">Kotlin • XML • Retrofit • OkHttp • Gson • Gradle</text>
-  <text x="710" y="1278" class="body-strong">BACKEND</text>
-  <text x="710" y="1307" class="body">Java 17 • Spring Boot • Security/JWT • JPA/Hibernate • Maven</text>
-  <text x="1300" y="1278" class="body-strong">DADOS E DEPLOY</text>
-  <text x="1300" y="1307" class="body">Supabase PostgreSQL • Docker • Render</text>
-
-  <text x="900" y="1348" text-anchor="middle" class="subtitle">Situação atual dos testes: somente exemplos padrão no Android e nenhum teste automatizado do backend.</text>
+  <rect x="200" y="1245" width="1400" height="95" rx="22" class="box" stroke="#96b4da"/>
+  <text x="245" y="1275" class="body-strong">APLICATIVO</text>
+  <text x="245" y="1305" class="body">Kotlin • XML • Retrofit • OkHttp</text>
+  <text x="245" y="1332" class="body">Gson • Gradle</text>
+  <text x="700" y="1275" class="body-strong">BACKEND</text>
+  <text x="700" y="1305" class="body">Java 17 • Spring Boot • Security/JWT</text>
+  <text x="700" y="1332" class="body">JPA/Hibernate • Maven</text>
+  <text x="1240" y="1275" class="body-strong">DADOS E DEPLOY</text>
+  <text x="1240" y="1305" class="body">Supabase PostgreSQL • Docker</text>
+  <text x="1240" y="1332" class="body">Render</text>
 </svg>
