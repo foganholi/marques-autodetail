@@ -22,6 +22,13 @@ O sistema aproxima clientes e empresas de estética automotiva. Ele permite enco
 4. O Supabase PostgreSQL armazena usuários, empresas, endereços, serviços, horários, agendamentos, favoritos e avaliações.
 5. Há dois fluxos principais: **cliente**, que pesquisa e agenda serviços, e **empresa**, que administra serviços, disponibilidade e agendamentos.
 
+### Quais tecnologias são utilizadas?
+
+- **Aplicativo Android:** Kotlin, XML, Retrofit, OkHttp, Gson e Gradle.
+- **Backend:** Java 17, Spring Boot, Spring Web, Spring Security, JWT, Spring Data JPA/Hibernate e Maven.
+- **Banco de dados:** Supabase PostgreSQL.
+- **Infraestrutura e deploy:** Docker e Render.
+
 ### Quais camadas ou funções são mais suscetíveis a falhas?
 
 - **Autenticação e autorização:** conferir JWT inválido ou expirado, papel do usuário e propriedade do recurso. No código atual, algumas alterações dependem apenas de o usuário estar autenticado, sem validar claramente se ele é a empresa ou o cliente relacionado ao dado.

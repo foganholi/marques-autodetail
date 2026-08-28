@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1360" viewBox="0 0 1800 1360" role="img" aria-labelledby="title desc">
   <title id="title">Mapa mental do projeto Marques AutoDetail — Qualidade de Software e Testes</title>
   <desc id="desc">Mapa mental com definição, finalidade, funcionamento, pontos vulneráveis, qualidade de software e testes prioritários do aplicativo Marques AutoDetail.</desc>
   <defs>
@@ -25,7 +25,7 @@
     </style>
   </defs>
 
-  <rect width="1800" height="1200" fill="url(#bg)"/>
+  <rect width="1800" height="1360" fill="url(#bg)"/>
   <circle cx="900" cy="610" r="330" fill="#dbeaf4" opacity="0.38"/>
   <circle cx="900" cy="610" r="255" fill="#eaf3f8" opacity="0.72"/>
 
@@ -40,6 +40,8 @@
   <path d="M 1090 500 C 1190 425, 1190 235, 1245 220" class="connector" stroke="#1f9b72"/>
   <path d="M 1110 610 C 1190 610, 1190 610, 1245 610" class="connector" stroke="#c54d5c"/>
   <path d="M 1090 720 C 1190 795, 1190 975, 1245 975" class="connector" stroke="#167d91"/>
+  <!-- Conector de tecnologias -->
+  <path d="M 900 750 C 900 915, 900 1075, 900 1165" class="connector" stroke="#3167a6"/>
 
   <circle cx="555" cy="220" r="10" fill="#2a78b8" class="dot"/>
   <circle cx="555" cy="595" r="10" fill="#d68a14" class="dot"/>
@@ -47,6 +49,7 @@
   <circle cx="1245" cy="220" r="10" fill="#1f9b72" class="dot"/>
   <circle cx="1245" cy="610" r="10" fill="#c54d5c" class="dot"/>
   <circle cx="1245" cy="975" r="10" fill="#167d91" class="dot"/>
+  <circle cx="900" cy="1165" r="10" fill="#3167a6" class="dot"/>
 
   <!-- Centro -->
   <path d="M760 470 L1040 470 L1130 610 L1040 750 L760 750 L670 610 Z" fill="url(#center)" stroke="#ffffff" stroke-width="7"/>
@@ -114,5 +117,16 @@
   <circle cx="1274" cy="1057" r="6" fill="#167d91"/><text x="1293" y="1063" class="body">Integração: API, JWT, autorização e banco.</text>
   <circle cx="1274" cy="1098" r="6" fill="#167d91"/><text x="1293" y="1104" class="body">UI/E2E, rede indisponível, carga e concorrência.</text>
 
-  <text x="900" y="1175" text-anchor="middle" class="subtitle">Situação atual dos testes: somente exemplos padrão no Android e nenhum teste automatizado do backend.</text>
+  <!-- 7. Tecnologias -->
+  <rect x="200" y="1165" width="1400" height="66" rx="20" fill="#3167a6"/>
+  <text x="225" y="1207" class="branch-title">7. TECNOLOGIAS UTILIZADAS</text>
+  <rect x="200" y="1245" width="1400" height="80" rx="22" class="box" stroke="#96b4da"/>
+  <text x="245" y="1278" class="body-strong">APLICATIVO</text>
+  <text x="245" y="1307" class="body">Kotlin • XML • Retrofit • OkHttp • Gson • Gradle</text>
+  <text x="710" y="1278" class="body-strong">BACKEND</text>
+  <text x="710" y="1307" class="body">Java 17 • Spring Boot • Security/JWT • JPA/Hibernate • Maven</text>
+  <text x="1300" y="1278" class="body-strong">DADOS E DEPLOY</text>
+  <text x="1300" y="1307" class="body">Supabase PostgreSQL • Docker • Render</text>
+
+  <text x="900" y="1348" text-anchor="middle" class="subtitle">Situação atual dos testes: somente exemplos padrão no Android e nenhum teste automatizado do backend.</text>
 </svg>
